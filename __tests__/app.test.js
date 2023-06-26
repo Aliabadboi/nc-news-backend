@@ -21,7 +21,8 @@ describe("GET /api/topics", () => {
     test("200: should respond with an array", () => {
         return request(app)
         .get('/api/topics')
-        .then(({body}) => {expect(body.topics).toBeInstanceOf(Array);
+        .then(({body}) => {
+            expect(body.topics).toBeInstanceOf(Array)
         })
     })
     test("200: each topic should have a slug and a description", () => {
@@ -33,6 +34,7 @@ describe("GET /api/topics", () => {
                     slug: expect.any(String),
                     description: expect.any(String)
                 })
+                expect(body.topics.length).toBe(3);
             })
         })
     })
