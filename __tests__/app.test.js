@@ -3,6 +3,7 @@ const app = require('../app');
 const seed = require("../db/seeds/seed");
 const testData = require('../db/data/test-data');
 const db = require("../db/connection")
+const data = require("../endpoints.json")
 
 beforeEach(() => {
     return seed(testData);
@@ -47,6 +48,18 @@ describe("404 not found test", () => {
         .expect(404)
         .then(({ body }) => {
             expect(body.msg).toBe('Not found');
+        })
+    })
+})
+
+
+describe("GET /api", () => {
+    test("200: should respond with contents of endpoints.json", () => {
+        return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toEqual(data);
         })
     })
 })
