@@ -70,7 +70,6 @@ describe("GET /api/articles/:article_id", () => {
         .get("/api/articles/5")
         .expect(200)
         .then(({ body }) => {
-            console.log(body.article[0].article_id);
             expect(body).toBeInstanceOf(Object);
             expect(body.article[0].article_id).toBe(5);
         })
@@ -96,3 +95,30 @@ describe("GET /api/articles/:article_id", () => {
     })
 })
 
+    // TEST TEST
+
+    describe("404 not found test for /api/articles/:article_id", () => {
+        test("404: should return status code '404 Not Found' when passed a none-existant ID", () => {
+            return request(app)
+            .get('/api/articles/100')
+            .expect(404)
+            .then(({ body }) => {
+                console.log(body.status, "body");
+                expect(body.msg).toBe('Not found');
+            })
+        })
+    })
+
+    describe("400 invalid request for /api/articles/:article_id", () => {
+        test("400: should return 'invalid request' when passed an invalid ID", () => {
+            return request(app)
+            .get('/api/articles/bananas')
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Bad Request');
+            })
+        })
+    })
+
+    // 404 none existant- same type but doesnt exist
+    // 400 different type totally- invalid

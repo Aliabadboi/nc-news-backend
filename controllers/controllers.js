@@ -19,7 +19,5 @@ exports.getArticleByID = (req, res, next) => {
     .then((article) => {
         res.status(200).send({ article });
     })
-    // errors - 400 incorrect id
-    // 404 - not found - test for this
-
+    .catch(next);
 }
