@@ -63,3 +63,14 @@ describe("GET /api", () => {
         })
     })
 })
+
+describe("GET /api/articles/:article_id", () => {
+    test("200: should respond with an article object matching the inputted article ID", () => {
+        return request(app)
+        .get("/api/articles/5")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toBeInstanceOf(Object);
+        })
+    })
+})
