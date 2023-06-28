@@ -29,7 +29,7 @@ describe("GET /api/topics", () => {
     test("200: each topic should have a slug and a description", () => {
         return request(app)
         .get('/api/topics')
-        .then(({body}) => {
+        .then(({ body }) => {
             body.topics.forEach((topic) => {
                 expect(topic).toMatchObject({
                     slug: expect.any(String),
@@ -63,3 +63,62 @@ describe("GET /api", () => {
         })
     })
 })
+
+describe("GET /api/articles/:article_id", () => {
+    test("200: should respond with an article object, matching the inputted article ID", () => {
+        return request(app)
+        .get("/api/articles/5")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toBeInstanceOf(Object);
+            expect(body.article[0].article_id).toBe(5);
+        })
+
+    })
+    test("200: should respond with an article object containing author title, article_id, body, topic, created_at, votes, article_img_url", () => {
+        return request(app)
+        .get("/api/articles/6")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body.article[0]).toMatchObject({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                body: expect.any(String),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                article_img_url: expect.any(String)
+            })
+        })
+        
+    })
+})
+
+    // TEST TEST
+
+    describe("404 not found test for /api/articles/:article_id", () => {
+        test("404: should return status code '404 Not Found' when passed a none-existant ID", () => {
+            return request(app)
+            .get('/api/articles/100')
+            .expect(404)
+            .then(({ body }) => {
+                console.log(body.status, "body");
+                expect(body.msg).toBe('Not found');
+            })
+        })
+    })
+
+    describe("400 invalid request for /api/articles/:article_id", () => {
+        test("400: should return 'invalid request' when passed an invalid ID", () => {
+            return request(app)
+            .get('/api/articles/bananas')
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Bad Request');
+            })
+        })
+    })
+
+    // 404 none existant- same type but doesnt exist
+    // 400 different type totally- invalid
