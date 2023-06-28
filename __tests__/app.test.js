@@ -63,3 +63,35 @@ describe("GET /api", () => {
         })
     })
 })
+
+// TASK 5 TESTS //
+// describe("GET /api/articles", () => {
+//     test("200: return an array containing article objects with author, title, article_id, topic, created_at, votes, article_img_url, comment_count", () => {
+//         return request(app)
+//         .get("/api/articles")
+//         .expect(200)
+//         .then(({ body }) => {
+//             const { articles } = body;
+//             expect(body).toBeInstanceOf(Array)
+//             articles.forEach((article) => {
+//                 expect(article).toMatchObject({
+//                     author: expect.any(String),
+//                     title: expect.any(String),
+//                     article_id: expect.any(Number),
+//                     topic: expect.any(String),
+//                     created_at: expect.any(String),
+//                     votes: expect.any(Number),
+//                     article_img_url: expect.any(String),
+//                     comment_count: expect.any(Number)
+//                 })
+//             })
+//         })
+//     })
+//     test("200: should return the array of article objects in date descending order", () => {
+//         return request(app)
+//         .app("/api/articles")
+//         .expect(200)
+//         .then(({}))
+//     })
+//     test.todo("should not be a body property?")
+// }) 
