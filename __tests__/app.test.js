@@ -94,3 +94,42 @@ afterAll(() => {
             });
         });
     });
+
+
+    describe("GET /api/articles/:article_id/comments", () => {
+        test("200: should return an array containing all the comment objects for the given article ID", () => {
+            return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.comments.length).toBe(11);
+            })
+        })
+        test("200: should return an array of comment objects, each containing comment_id, votes, created_at, author, body, article_id", () =>{
+            return request(app)
+            .get("/api/articles/9/comments")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.comments.length).toBe(2);
+                body.comments.forEach(comment => {
+                    expect(comment).toMatchObject({
+                        comment_id: expect.any(Number), 
+                        votes: expect.any(Number), 
+                        created_at: expect.any(String), 
+                        author: expect.any(String), 
+                        body: expect.any(String),
+                        article_id: expect.any(Number)
+                    })
+                })
+            })
+        })
+        // test("200: should return an array of comment objects with the most recent comments first", () =>{
+        //     return request(app)
+        //     .get("/api/articles/1/comments")
+        //     .expect(200)
+        //     .then(({body}) => {
+        //         expect(body.comments.length).toBe(11);
+        //         expect(body.comments).toBeSorted("created_at", {descending: true});
+        //     })
+        // })
+    })
