@@ -150,8 +150,3 @@ afterAll(() => {
             });
         });
     })
-
-
-
-    // 404 not found - correct type but resource not found, psql will not detect, implement code in the model
-    // 400 bad request - invalid type, handled by custom error? 

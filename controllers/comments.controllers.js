@@ -11,3 +11,9 @@ exports.getCommentsByArticleID = (req, res, next) => {
         next(err)
     });
 }
+
+exports.postCommentByArticleID = () => {
+    // invoke model- naming convention 
+    // req.body ?
+    // send back via res
+}

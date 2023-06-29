@@ -14,3 +14,13 @@ exports.selectCommentsByArticleID = (article_id) => {
         return comments.rows;
     })
 }
+
+exports.createCommentByArticleID = () => {
+    // needs a parameter 
+    // query : insert into (column names) values $1/$2... || %L + [parameters to enter in an array?]
+    // error handling? 
+    // 404 - correct ID type (number) but resource not found, ergo, cannot post
+    // 400 - incorrect ID type, bad request
+    // invalid input types for user name and body... malformed post request
+    // responds with posted comment ? returning *; ? or something else...
+}
