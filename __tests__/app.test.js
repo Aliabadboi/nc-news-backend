@@ -110,6 +110,7 @@ afterAll(() => {
             .get("/api/articles/9/comments")
             .expect(200)
             .then(({body}) => {
+                expect(body.comments).toBeInstanceOf(Array)
                 expect(body.comments.length).toBe(2);
                 body.comments.forEach(comment => {
                     expect(comment).toMatchObject({
@@ -123,13 +124,34 @@ afterAll(() => {
                 })
             })
         })
-        // test("200: should return an array of comment objects with the most recent comments first", () =>{
-        //     return request(app)
-        //     .get("/api/articles/1/comments")
-        //     .expect(200)
-        //     .then(({body}) => {
-        //         expect(body.comments.length).toBe(11);
-        //         expect(body.comments).toBeSorted("created_at", {descending: true});
-        //     })
-        // })
+        test("200: should return an array of comment objects with the most recent comments first", () =>{
+            return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.comments.length).toBe(11);
+                expect(body.comments).toBeSortedBy("created_at", {descending: true});
+            })
+        })
+        test("404: should return a 404 'not found' error", () => {
+            return request(app)
+            .get("/api/articles/150/comments")
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe("Not found");
+            })
+        });
+        test("400: should return a 400 'bad request' error when passed an invalid ID", () => {
+            return request(app)
+            .get('/api/articles/bananas/comments')
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Bad request');
+            });
+        });
     })
+
+
+
+    // 404 not found - correct type but resource not found, psql will not detect, implement code in the model
+    // 400 bad request - invalid type, handled by custom error? 
