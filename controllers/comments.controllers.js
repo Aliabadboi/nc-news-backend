@@ -13,8 +13,15 @@ exports.getCommentsByArticleID = (req, res, next) => {
     });
 }
 
-exports.postCommentByArticleID = () => {
+exports.postCommentByArticleID = (req, res, next) => {
+    console.log("hello from controller");
+    insertComment(req.body)
+    .then((comment) => {
+        res.status(201).send({comment});
+    })
+
     // invoke model- naming convention 
     // req.body ?
     // send back via res
 }
+

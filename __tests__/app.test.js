@@ -234,5 +234,13 @@ afterAll(() => {
         })
     }) 
     
-
+    describe("POST /api/articles/:article_id/comments", () => {
+        test("201: should add a new comment consisting of a username and a body for the specified article id parameter", () => {
+            return request(app)
+            .post("/api/articles/2/comments")
+            .expect(201)
+            .then()
+        }
+        )
+    })
 
