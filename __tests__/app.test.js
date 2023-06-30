@@ -183,10 +183,6 @@ afterAll(() => {
         });
     })
 
-
-
-    // 404 not found - correct type but resource not found, psql will not detect, implement code in the model
-    // 400 bad request - invalid type, handled by custom error? 
     describe("GET /api/articles", () => {
         test("200: return an array containing article objects with author, title, article_id, topic, created_at, votes, article_img_url, comment_count", () => {
             return request(app)
