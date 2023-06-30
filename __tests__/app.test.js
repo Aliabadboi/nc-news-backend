@@ -101,7 +101,7 @@ afterAll(() => {
                     author: expect.any(String),
                     title: expect.any(String),
                     body: expect.any(String),
-                    article_id: expect.any(Number),
+                    article_id: 6,
                     topic: expect.any(String),
                     created_at: expect.any(String), 
                     votes: expect.any(Number),
@@ -151,7 +151,7 @@ afterAll(() => {
                         created_at: expect.any(String), 
                         author: expect.any(String), 
                         body: expect.any(String),
-                        article_id: expect.any(Number)
+                        article_id: 9
                     })
                 })
             })
@@ -163,6 +163,15 @@ afterAll(() => {
             .then(({body}) => {
                 expect(body.comments.length).toBe(11);
                 expect(body.comments).toBeSortedBy("created_at", {descending: true});
+            })
+        })
+        test("200: should return an empty array when a valid article ID has no associated comments", () => {
+            return request(app)
+            .get("/api/articles/2/comments")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.comments.length).toBe(0);
+                expect(body.comments).toEqual([]);
             })
         })
         test("404: should return a 404 'not found' error", () => {
