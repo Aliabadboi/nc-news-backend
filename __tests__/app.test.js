@@ -236,11 +236,70 @@ afterAll(() => {
     
     describe("POST /api/articles/:article_id/comments", () => {
         test("201: should add a new comment consisting of a username and a body for the specified article id parameter", () => {
+            const newComment = {
+                body: "hello im a comment",
+                username: "lurker",
+            }
             return request(app)
-            .post("/api/articles/2/comments")
-            .expect(201)
-            .then()
-        }
-        )
+                .post("/api/articles/2/comments")
+                .send(newComment)
+                .expect(201)
+                .then(({body}) => {
+                    expect(body.comment).toMatchObject({
+                        comment_id: 19,
+                        body: "hello im a comment",
+                        article_id: 2,
+                        author: "lurker",
+                        votes: expect.any(Number),
+                        created_at: expect.any(String)
+                    })
+            })
+        })
+        test("400: should return a 400 malformed request error when request body is missing", () => {
+            const newComment = {
+                username: "lurker",
+            }
+            return request(app)
+                .post("/api/articles/2/comments")
+                .send(newComment)
+                .expect(400)
+                .then(({body}) =>{
+                    expect(body.msg).toBe("Bad request")
+                })
+        })
+        test("400: should return a 400 malformed request error when username is missing", () => {
+            const newComment = {
+                body: "this was great",
+                username: "Olive"
+            }
+            return request(app)
+                .post("/api/articles/2/comments")
+                .send(newComment)
+                .expect(400)
+                .then(({body}) =>{
+                    expect(body.msg).toBe("Bad request")
+                })
+        })
+        test("400: should return a 400 error when article id is invalid type", () => {
+            const newComment = {
+                body: "this was great",
+                username: "lurker"
+            }
+            return request(app)
+                .post("/api/articles/bananas/comments")
+                .send(newComment)
+                .expect(400)
+                .then(({body}) =>{
+                    expect(body.msg).toBe("Bad request")
+                })
+        })
+        test("404: should return a 404 'not found' error for non-existent article id", () => {
+            return request(app)
+            .post("/api/articles/150/comments")
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe("Not found");
+            })
+        });
     })
 

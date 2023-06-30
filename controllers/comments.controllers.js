@@ -1,4 +1,4 @@
-const { selectCommentsByArticleID } = require("../models/comments.models");
+const { selectCommentsByArticleID, postComment } = require("../models/comments.models");
 const data = require("../endpoints.json")
 const { selectArticleByID } = require("../models/models")
 
@@ -13,15 +13,14 @@ exports.getCommentsByArticleID = (req, res, next) => {
     });
 }
 
-exports.postCommentByArticleID = (req, res, next) => {
-    console.log("hello from controller");
-    insertComment(req.body)
-    .then((comment) => {
+exports.addComment = (req, res, next) => {
+    const { article_id } = req.params;
+    Promise.all([selectArticleByID(article_id), postComment(req.body, article_id)])
+    .then(([article, comment]) => {
         res.status(201).send({comment});
     })
-
-    // invoke model- naming convention 
-    // req.body ?
-    // send back via res
+    .catch((err) => {
+        console.log(err);
+        next(err)
+    });
 }
-
