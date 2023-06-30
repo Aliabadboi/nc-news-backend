@@ -59,6 +59,37 @@ afterAll(() => {
             .then(({ body }) => {
                 expect(body).toBeInstanceOf(Object);
                 expect(body.article[0].article_id).toBe(5);
+            })
+        })
+        test("200: should respond with an article object containing author title, article_id, body, topic, created_at, votes, article_img_url", () => {
+            return request(app)
+            .get("/api/articles/6")
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.article[0]).toMatchObject({
+                    author: expect.any(String),
+                    title: expect.any(String),
+                    article_id: expect.any(Number),
+                    body: expect.any(String),
+                    topic: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    article_img_url: expect.any(String)
+                })
+            })
+            
+        })
+    })
+
+
+    describe("GET /api/articles/:article_id", () => {
+        test("200: should respond with an article object, matching the inputted article ID", () => {
+            return request(app)
+            .get("/api/articles/5")
+            .expect(200)
+            .then(({ body }) => {
+                expect(body).toBeInstanceOf(Object);
+                expect(body.article[0].article_id).toBe(5);
             });
         });
         test("200: should respond with an article object containing author title, article_id, body, topic, created_at, votes, article_img_url", () => {
@@ -70,8 +101,9 @@ afterAll(() => {
                     author: expect.any(String),
                     title: expect.any(String),
                     body: expect.any(String),
+                    article_id: expect.any(Number),
                     topic: expect.any(String),
-                    created_at: expect.any(String),
+                    created_at: expect.any(String), 
                     votes: expect.any(Number),
                     article_img_url: expect.any(String)
                 });
@@ -155,3 +187,46 @@ afterAll(() => {
 
     // 404 not found - correct type but resource not found, psql will not detect, implement code in the model
     // 400 bad request - invalid type, handled by custom error? 
+    describe("GET /api/articles", () => {
+        test("200: return an array containing article objects with author, title, article_id, topic, created_at, votes, article_img_url, comment_count", () => {
+            return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles).toBeInstanceOf(Array)
+                expect(body.articles.length).toBe(13);
+                body.articles.forEach((article) => {
+                    expect(article).toMatchObject({
+                        author: expect.any(String),
+                        title: expect.any(String),
+                        article_id: expect.any(Number),
+                        topic: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        article_img_url: expect.any(String),
+                        comment_count: expect.any(String)
+                    })
+                }) 
+            })
+            } )
+        test("200: should return the array of article objects in date descending order", () => {
+            return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body }) => {
+                const { articles } = body;
+                expect(articles).toBeSortedBy("created_at", { descending: true });
+              });
+        })
+        test("404: should return a 404 'not found' if incorrect endpoint specified", () => {
+            return request(app)
+            .get("/api/bananas")
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Not found');
+            });
+        })
+    }) 
+    
+
+
