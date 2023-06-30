@@ -32,15 +32,6 @@ exports.selectArticles = () => {
     GROUP BY articles.article_id
     ORDER BY created_at DESC;`)
     .then(({rows}) => {
-        console.log(rows);
         return rows
     })
 }
-
-
-// agg group by
-// join ? between articles and comments 
-// access comments => count 
-// access comments-votes => count votes
-// `SELECT title, article_id, topic, created_at, votes, article_img_url FROM articles ;
-

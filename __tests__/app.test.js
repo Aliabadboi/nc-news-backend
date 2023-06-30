@@ -101,7 +101,7 @@ afterAll(() => {
                     author: expect.any(String),
                     title: expect.any(String),
                     body: expect.any(String),
-                    article_id: expect.any(Number),
+                    article_id: 6,
                     topic: expect.any(String),
                     created_at: expect.any(String), 
                     votes: expect.any(Number),
@@ -126,6 +126,71 @@ afterAll(() => {
             });
         });
     });
+
+
+    describe("GET /api/articles/:article_id/comments", () => {
+        test("200: should return an array containing all the comment objects for the given article ID", () => {
+            return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.comments.length).toBe(11);
+            })
+        })
+        test("200: should return an array of comment objects, each containing comment_id, votes, created_at, author, body, article_id", () =>{
+            return request(app)
+            .get("/api/articles/9/comments")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.comments).toBeInstanceOf(Array)
+                expect(body.comments.length).toBe(2);
+                body.comments.forEach(comment => {
+                    expect(comment).toMatchObject({
+                        comment_id: expect.any(Number), 
+                        votes: expect.any(Number), 
+                        created_at: expect.any(String), 
+                        author: expect.any(String), 
+                        body: expect.any(String),
+                        article_id: 9
+                    })
+                })
+            })
+        })
+        test("200: should return an array of comment objects with the most recent comments first", () =>{
+            return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.comments.length).toBe(11);
+                expect(body.comments).toBeSortedBy("created_at", {descending: true});
+            })
+        })
+        test("200: should return an empty array when a valid article ID has no associated comments", () => {
+            return request(app)
+            .get("/api/articles/2/comments")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.comments.length).toBe(0);
+                expect(body.comments).toEqual([]);
+            })
+        })
+        test("404: should return a 404 'not found' error", () => {
+            return request(app)
+            .get("/api/articles/150/comments")
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe("Not found");
+            })
+        });
+        test("400: should return a 400 'bad request' error when passed an invalid ID", () => {
+            return request(app)
+            .get('/api/articles/bananas/comments')
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Bad request');
+            });
+        });
+    })
 
     describe("GET /api/articles", () => {
         test("200: return an array containing article objects with author, title, article_id, topic, created_at, votes, article_img_url, comment_count", () => {
