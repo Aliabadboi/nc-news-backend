@@ -3,8 +3,8 @@ const db = require("../db/connection.js")
 exports.selectTopics = () => {
     return db
     .query(`SELECT * FROM topics`)
-    .then((results) => {
-        return results.rows;
+    .then((topics) => {
+        return topics.rows;
     });
 }
 
@@ -21,3 +21,26 @@ exports.selectArticleByID = (article_id) => {
         return article.rows;
     })
 }
+
+exports.selectArticles = () => {
+    return db
+    .query(`
+    SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, article_img_url, COUNT(comments.article_id) AS comment_count
+    FROM articles
+    LEFT JOIN comments
+    ON articles.article_id = comments.article_id
+    GROUP BY articles.article_id
+    ORDER BY created_at DESC;`)
+    .then(({rows}) => {
+        console.log(rows);
+        return rows
+    })
+}
+
+
+// agg group by
+// join ? between articles and comments 
+// access comments => count 
+// access comments-votes => count votes
+// `SELECT title, article_id, topic, created_at, votes, article_img_url FROM articles ;
+

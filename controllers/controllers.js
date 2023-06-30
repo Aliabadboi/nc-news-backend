@@ -1,5 +1,6 @@
-const { selectTopics, selectArticleByID } = require("../models/models");
-const data = require("../endpoints.json")
+const { selectTopics, selectArticleByID, selectArticles } = require("../models/models");
+const data = require("../endpoints.json");
+const articles = require("../db/data/test-data/articles");
 
 exports.getTopics = (req, res, next) => {
     selectTopics()
@@ -23,3 +24,9 @@ exports.getArticleByID = (req, res, next) => {
         next(err)
     });
 }
+
+exports.getArticles = (req, res) => {
+    selectArticles()
+    .then((articles) => {
+    res.status(200).send({ articles });
+})} 
