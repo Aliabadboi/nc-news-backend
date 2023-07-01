@@ -329,7 +329,7 @@ afterAll(() => {
         });
     })
 
-    describe.only("PATCH /api/articles/:article_id", () => {
+    describe("PATCH /api/articles/:article_id", () => {
         test("200: should update the existing votes on an article", () => {
             const newVotes = {
                 inc_votes : 10
