@@ -1,4 +1,4 @@
-const { selectTopics, selectArticleByID, selectArticles } = require("../models/models");
+const { selectTopics, selectArticleByID, selectArticles, updateArticleVotes } = require("../models/articles.models");
 const data = require("../endpoints.json");
 const articles = require("../db/data/test-data/articles");
 
@@ -30,3 +30,16 @@ exports.getArticles = (req, res) => {
     .then((articles) => {
     res.status(200).send({ articles });
 })} 
+
+exports.editArticleVotes = (req, res, next) => {
+    const { article_id } = req.params;
+    const votes = req.body;
+    console.log(votes.inc_votes, "<<<< VOTES, REQ BODY");
+    updateArticleVotes(article_id, votes.inc_votes)
+    .then((article) => {
+        res.status(200).send({ article })
+    })
+    .catch((err) => {
+        next(err)
+    });
+}

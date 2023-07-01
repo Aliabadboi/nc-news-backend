@@ -1,6 +1,6 @@
 const { selectCommentsByArticleID, postComment } = require("../models/comments.models");
 const data = require("../endpoints.json")
-const { selectArticleByID } = require("../models/models")
+const { selectArticleByID } = require("../models/articles.models")
 
 exports.getCommentsByArticleID = (req, res, next) => {
     const { article_id } = req.params;

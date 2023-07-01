@@ -315,12 +315,35 @@ afterAll(() => {
                 })
         })
         test("404: should return a 404 'not found' error for non-existent article id", () => {
+            const newComment = {
+                body: "this was great",
+                username: "lurker"
+            }
             return request(app)
             .post("/api/articles/150/comments")
+            .send(newComment)
             .expect(404)
             .then(({body}) => {
                 expect(body.msg).toBe("Not found");
             })
         });
+    })
+
+    describe.only("PATCH /api/articles/:article_id", () => {
+        test("200: should update the existing votes on an article", () => {
+            const newVotes = {
+                inc_votes : 10
+            }
+            return request(app)
+            .patch("/api/articles/1")
+            .send(newVotes)
+            .expect(200)
+            .then(({body}) => {
+               expect(body.article[0].votes).toBe(110);
+            })
+        })
+        test.todo("400: malformed / incorrect type eg vote == bananas")
+        test.todo("400: incorrect type for article_id")
+        test.todo("404: valid type but no resource for article id")
     })
 
