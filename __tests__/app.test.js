@@ -383,7 +383,6 @@ describe('PATCH /api/articles/:article_id', () => {
       .send(newVotes)
       .expect(404)
       .then(({ body }) => {
-        console.log(body.msg);
         expect(body.msg).toBe('Not found');
       });
   });

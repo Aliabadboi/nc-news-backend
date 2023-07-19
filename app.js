@@ -4,7 +4,8 @@ const {
   getAPI,
   getArticleByID,
   getArticles,
-} = require('./controllers/controllers');
+  editArticleVotes,
+} = require('./controllers/articles.controllers');
 const {
   handlePsqlErrors,
   handleCustomErrors,
