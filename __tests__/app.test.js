@@ -387,3 +387,20 @@ describe('PATCH /api/articles/:article_id', () => {
       });
   });
 });
+
+describe('GET /api/comments', () => {
+  test('200: should respond with an array of comments', () => {
+    return request(app)
+      .get('/api/comments')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.topics).toBeInstanceOf(Array);
+      });
+  });
+});
+
+describe('DELETE /api/comments/:comment_id', () => {
+  test('204: should delete the comment at the given comment id', () => {
+    return request(app).delete('/api/comments/1').expect(204);
+  });
+});
