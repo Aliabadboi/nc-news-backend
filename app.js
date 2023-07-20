@@ -17,7 +17,10 @@ const {
   addComment,
   deleteCommentByCommentId,
 } = require('./controllers/comments.controllers');
-const { getUsers } = require('./controllers/users.controllers');
+const {
+  getUsers,
+  getUserByUserId,
+} = require('./controllers/users.controllers');
 const cors = require('cors');
 const app = express();
 
@@ -29,6 +32,8 @@ app.get('/api/topics', getTopics);
 app.get('/api/comments', getComments);
 
 app.get('/api/users', getUsers);
+
+app.get('/api/users/:username', getUserByUserId);
 
 app.get('/api/', getAPI);
 
