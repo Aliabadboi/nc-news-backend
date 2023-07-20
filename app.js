@@ -17,6 +17,7 @@ const {
   addComment,
   deleteCommentByCommentId,
 } = require('./controllers/comments.controllers');
+const { getUsers } = require('./controllers/users.controllers');
 const cors = require('cors');
 const app = express();
 
@@ -26,6 +27,8 @@ app.use(express.json());
 app.get('/api/topics', getTopics);
 
 app.get('/api/comments', getComments);
+
+app.get('/api/users', getUsers);
 
 app.get('/api/', getAPI);
 
