@@ -404,3 +404,19 @@ describe('DELETE /api/comments/:comment_id', () => {
     return request(app).delete('/api/comments/1').expect(204);
   });
 });
+// ***sad path tests still required***
+
+// USERS
+describe('GET /api/users', () => {
+  test('200: should respond with an array of users', () => {
+    return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body.users);
+        expect(body.users).toBeInstanceOf(Array);
+      });
+  });
+});
+
+// ***sad path tests still required***
